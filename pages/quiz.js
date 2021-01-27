@@ -63,7 +63,7 @@ function QuestionWidget({
             return (
               <Widget.Topic
                 as="label"
-                htmlFor={alternative}
+                htmlFor={alternativeId}
               >
                 <input
                   id={alternativeId}
@@ -126,7 +126,22 @@ export default function QuizPage() {
           />
         )}
         {screenState === screenStates.LOADING && <LoadingWidget />}
-        {screenState === screenStates.RESULT && <div>Você acertou X questões, parabéns </div>}
+        {screenState === screenStates.RESULT && (
+          <div>
+            <p>Ainda não posso dizer o quanto você acertou, ainda estou trabalhando nisso ! :D</p>
+            <Button>
+              <a
+                style={{
+                  color: 'white',
+                  textDecoration: 'none',
+                }}
+                href="/"
+              >
+                Inicio
+              </a>
+            </Button>
+          </div>
+        )}
       </QuizContainer>
     </QuizBackground>
   );
