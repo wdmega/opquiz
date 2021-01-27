@@ -20,13 +20,13 @@ export default function Home() {
   return (
     <QuizBackground backgroundImage={db.bg}>
       <Head>
-        <title>OP Quiz - Base</title>
+        <title>One Piece Quiz - Base</title>
       </Head>
       <QuizContainer>
         <QuizLogo />
         <Widget>
           <Widget.Header>
-            <h1>The Legend of Meme</h1>
+            <h1>One Piece Quiz</h1>
           </Widget.Header>
 
           <Widget.Content>
@@ -55,12 +55,12 @@ export default function Home() {
         <Widget>
           <Widget.Header>
 
-            <h1>The Legend of Meme</h1>
+            <h1>Em Construção ....</h1>
 
           </Widget.Header>
           <Widget.Content>
 
-            <p>lorem ipsum</p>
+            <p>Nada por aqui ainda !!</p>
 
           </Widget.Content>
         </Widget>
