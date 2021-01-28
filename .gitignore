@@ -4,7 +4,8 @@
 /node_modules
 /.pnp
 .pnp.
-.eslintrc.js
+.eslintrc.
+pendencias.txt
 
 # testing
 /coverage
