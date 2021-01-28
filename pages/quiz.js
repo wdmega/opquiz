@@ -1,12 +1,67 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { useRouter } from 'next/router';
+
 import db from '../db.json';
 import Widget from '../src/components/Widgets';
 import QuizLogo from '../src/components/QuizLogo';
 import QuizBackground from '../src/components/QuizBackground';
 import QuizContainer from '../src/components/QuizContainer';
+import AlternativesForm from '../src/components/AlternativesForm';
 import Button from '../src/components/Button';
+
+function ResultWidget({ results }) {
+  const router = useRouter(); // utilizado no botão na tela de resultado para voltar pra home
+  return (
+    <Widget>
+      <Widget.Header>
+        Resultado:
+      </Widget.Header>
+
+      <Widget.Content>
+        <div>
+          <p>
+            Você acertou
+            {' '}
+            {results.reduce((somatoriaAtual, resultadoAtual) => {
+              const isAcerto = resultadoAtual === true;
+              if (isAcerto) {
+                return somatoriaAtual + 1;
+              }
+              return somatoriaAtual;
+            }, 0)}
+            {' '}
+            perguntas
+          </p>
+          <ul>
+            {results.map((result, index) => (
+              <li key={`result__${result}`}>
+                #
+                {index + 1}
+                {' '}
+                Resultado:
+                {result === true
+                  ? ' Acertou'
+                  : ' Errou'}
+              </li>
+            ))}
+          </ul>
+          <form onSubmit={(event) => {
+            // Evita da pagína ser recarregada após o envio do form
+            event.preventDefault();
+            router.push('/');
+          }}
+          >
+            <Button type="submit">
+              Inicio
+            </Button>
+          </form>
+        </div>
+      </Widget.Content>
+    </Widget>
+  );
+}
 
 function LoadingWidget() {
   return (
@@ -23,9 +78,17 @@ function LoadingWidget() {
 }
 
 function QuestionWidget({
-  questions, totalQuestions, questionIndex, onSubmit,
+  questions,
+  totalQuestions,
+  questionIndex,
+  onSubmit,
+  addResult,
 }) {
+  const [selectedAlternative, setSelectedAlternative] = React.useState(undefined);
+  const [isQuestionSubmitted, setIsQuestionSubmitted] = React.useState(false);
   const questionId = `question_${questionIndex}`;
+  const isCorrect = selectedAlternative === questions.answer;
+  const hasAlternativeSelected = selectedAlternative !== undefined;
   return (
     <Widget>
       <Widget.Header>
@@ -52,22 +115,35 @@ function QuestionWidget({
           {questions.description}
         </p>
 
-        <form
+        <AlternativesForm
           onSubmit={(event) => {
             event.preventDefault();
-            onSubmit();
+            setIsQuestionSubmitted(true);
+            setTimeout(() => {
+              addResult(isCorrect);
+              onSubmit();
+              setIsQuestionSubmitted(false);
+              setSelectedAlternative(undefined);
+            }, 3 * 1000);
           }}
         >
           {questions.alternatives.map((alternative, alternativeIndex) => {
             const alternativeId = `alternative__${alternativeIndex}`;
+            const alternativeStatus = isCorrect ? 'SUCCESS' : 'ERROR';
+            const isSelected = selectedAlternative === alternativeIndex;
             return (
               <Widget.Topic
                 as="label"
+                key={alternativeId}
                 htmlFor={alternativeId}
+                data-selected={isSelected}
+                data-status={isQuestionSubmitted && alternativeStatus}
               >
                 <input
+                  style={{ display: 'none' }}
                   id={alternativeId}
                   name={questionId}
+                  onChange={() => setSelectedAlternative(alternativeIndex)}
                   type="radio"
                 />
                 {alternative}
@@ -75,10 +151,12 @@ function QuestionWidget({
             );
           })}
 
-          <Button type="submit">
+          <Button type="submit" disabled={!hasAlternativeSelected}>
             Confirmar
           </Button>
-        </form>
+          {isQuestionSubmitted && isCorrect && <p>Você kkkkk !</p>}
+          {isQuestionSubmitted && !isCorrect && <p>Você f !</p>}
+        </AlternativesForm>
       </Widget.Content>
     </Widget>
   );
@@ -92,10 +170,18 @@ const screenStates = {
 
 export default function QuizPage() {
   const [screenState, setScreenState] = React.useState(screenStates.LOADING);
+  const [results, setResults] = React.useState([]);
   const totalQuestions = db.questions.length;
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
   const questionIndex = currentQuestion;
   const questions = db.questions[questionIndex];
+
+  function addResult(result) {
+    setResults([
+      ...results,
+      result,
+    ]);
+  }
 
   React.useEffect(() => {
     // fetch(PESQUISAR SOBRE ISSO DEPOIS)
@@ -123,25 +209,11 @@ export default function QuizPage() {
             questionIndex={questionIndex}
             totalQuestions={totalQuestions}
             onSubmit={handleSubmitQuiz}
+            addResult={addResult}
           />
         )}
         {screenState === screenStates.LOADING && <LoadingWidget />}
-        {screenState === screenStates.RESULT && (
-          <div>
-            <p>Ainda não posso dizer o quanto você acertou, ainda estou trabalhando nisso ! :D</p>
-            <Button>
-              <a
-                style={{
-                  color: 'white',
-                  textDecoration: 'none',
-                }}
-                href="/"
-              >
-                Inicio
-              </a>
-            </Button>
-          </div>
-        )}
+        {screenState === screenStates.RESULT && <ResultWidget results={results} />}
       </QuizContainer>
     </QuizBackground>
   );
