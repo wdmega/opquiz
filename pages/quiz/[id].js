@@ -1,10 +1,42 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable react/prop-types */
+/* eslint-disable linebreak-style */
 import React from 'react';
+import { ThemeProvider } from 'styled-components';
+import QuizScreen from '../../src/screen/Quiz';
 
-export default function QuizDaGaleraPage() {
+export default function QuizDaGaleraPage({ dbExterno }) {
   return (
-    <div>
-      Desafio da proxima aula
-    </div>
+    <ThemeProvider theme={dbExterno.theme}>
+      <QuizScreen
+        externalQuestions={dbExterno.questions}
+        externalBg={dbExterno.bg}
+      />
+    </ThemeProvider>
   );
+}
+
+export async function getServerSideProps(context) {
+  const [projectName, gitHubUser] = context.query.id.split('___');
+  try {
+    const dbExterno = await fetch(`https://${projectName}.${gitHubUser}.vercel.app/api/db`)
+      .then((respostaDoServer) => {
+        if (respostaDoServer.ok) {
+          return respostaDoServer.json();
+        }
+        throw new Error('Falha em pegar os dados');
+      })
+      .then((respostaConvertidaEmObjeto) => respostaConvertidaEmObjeto)
+      .catch((err) => {
+        console.log('deu errado', err);
+      });
+
+    return {
+      props: {
+        dbExterno,
+      },
+    };
+  } catch (err) {
+    throw new Error(err);
+  }
 }
