@@ -1,15 +1,19 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable react/prop-types */
+/* Pagina copiada para receber o quiz da galera, mas pode ser feita como componente
+para nao precisar duplicar */
+
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import db from '../db.json';
-import Widget from '../src/components/Widgets';
-import QuizLogo from '../src/components/QuizLogo';
-import QuizBackground from '../src/components/QuizBackground';
-import QuizContainer from '../src/components/QuizContainer';
-import AlternativesForm from '../src/components/AlternativesForm';
-import Button from '../src/components/Button';
+// import db from '../../../db.json';
+import Widget from '../../components/Widgets';
+import QuizLogo from '../../components/QuizLogo';
+import QuizBackground from '../../components/QuizBackground';
+import QuizContainer from '../../components/QuizContainer';
+import AlternativesForm from '../../components/AlternativesForm';
+import Button from '../../components/Button';
+import BackLinkArrow from '../../components/BackLinkArrow';
 
 function ResultWidget({ results }) {
   const router = useRouter(); // utilizado no botão na tela de resultado para voltar pra home
@@ -92,7 +96,7 @@ function QuestionWidget({
   return (
     <Widget>
       <Widget.Header>
-        {/* <backLinkArrow href="/" /> */}
+        <BackLinkArrow href="/" />
         <h3>
           {`Pergunta ${questionIndex + 1} de ${totalQuestions}`}
         </h3>
@@ -154,8 +158,8 @@ function QuestionWidget({
           <Button type="submit" disabled={!hasAlternativeSelected}>
             Confirmar
           </Button>
-          {isQuestionSubmitted && isCorrect && <p>Você kkkkk !</p>}
-          {isQuestionSubmitted && !isCorrect && <p>Você f !</p>}
+          {isQuestionSubmitted && isCorrect && <p>Você Acertou!</p>}
+          {isQuestionSubmitted && !isCorrect && <p>Você Errou!</p>}
         </AlternativesForm>
       </Widget.Content>
     </Widget>
@@ -168,13 +172,14 @@ const screenStates = {
   RESULT: 'RESULT',
 };
 
-export default function QuizPage() {
+export default function QuizPage({ externalQuestions, externalBg }) {
   const [screenState, setScreenState] = React.useState(screenStates.LOADING);
   const [results, setResults] = React.useState([]);
-  const totalQuestions = db.questions.length;
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
   const questionIndex = currentQuestion;
-  const questions = db.questions[questionIndex];
+  const questions = externalQuestions[questionIndex];
+  const totalQuestions = externalQuestions.length;
+  const bg = externalBg;
 
   function addResult(result) {
     setResults([
@@ -200,7 +205,7 @@ export default function QuizPage() {
   }
 
   return (
-    <QuizBackground backgroundImage={db.bg}>
+    <QuizBackground backgroundImage={bg}>
       <QuizContainer>
         <QuizLogo />
         {screenState === screenStates.QUIZ && (
