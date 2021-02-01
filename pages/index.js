@@ -1,6 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
 import React from 'react';
-// import styled from 'styled-components';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
@@ -31,7 +30,7 @@ export default function Home() {
           transition={{ delay: 0.1, duration: 0.5 }}
           variants={{
             show: { opacity: 1, y: '0' },
-            hidden: { opacity: 0, y: '100%' },
+            hidden: { opacity: 0, y: '-100%' },
           }}
           initial="hidden"
           animate="show"
