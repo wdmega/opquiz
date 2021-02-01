@@ -1,81 +1,19 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 import db from '../../db.json';
 import Widget from '../../src/components/Widgets';
+import BackLinkArrow from '../../src/components/BackLinkArrow';
 import QuizLogo from '../../src/components/QuizLogo';
 import QuizBackground from '../../src/components/QuizBackground';
 import QuizContainer from '../../src/components/QuizContainer';
 import AlternativesForm from '../../src/components/AlternativesForm';
 import Button from '../../src/components/Button';
 
-function ResultWidget({ results }) {
-  const router = useRouter(); // utilizado no botão na tela de resultado para voltar pra home
-  return (
-    <Widget>
-      <Widget.Header>
-        Resultado:
-      </Widget.Header>
-
-      <Widget.Content>
-        <div>
-          <p>
-            Você acertou
-            {' '}
-            {results.reduce((somatoriaAtual, resultadoAtual) => {
-              const isAcerto = resultadoAtual === true;
-              if (isAcerto) {
-                return somatoriaAtual + 1;
-              }
-              return somatoriaAtual;
-            }, 0)}
-            {' '}
-            perguntas
-          </p>
-          <ul>
-            {results.map((result, index) => (
-              <li key={`result__${result}`}>
-                #
-                {index + 1}
-                {' '}
-                Resultado:
-                {result === true
-                  ? ' Acertou'
-                  : ' Errou'}
-              </li>
-            ))}
-          </ul>
-          <form onSubmit={(event) => {
-            // Evita da pagína ser recarregada após o envio do form
-            event.preventDefault();
-            router.push('/');
-          }}
-          >
-            <Button type="submit">
-              Inicio
-            </Button>
-          </form>
-        </div>
-      </Widget.Content>
-    </Widget>
-  );
-}
-
-function LoadingWidget() {
-  return (
-    <Widget>
-      <Widget.Header>
-        Carregando...
-      </Widget.Header>
-
-      <Widget.Content>
-        [Desafio do Loading]
-      </Widget.Content>
-    </Widget>
-  );
-}
+import ResultWidget from '../../src/screen/Result';
+import LoadingWidget from '../../src/screen/Loading';
 
 function QuestionWidget({
   questions,
@@ -92,7 +30,7 @@ function QuestionWidget({
   return (
     <Widget>
       <Widget.Header>
-        {/* <backLinkArrow href="/" /> */}
+        <BackLinkArrow href="/" />
         <h3>
           {`Pergunta ${questionIndex + 1} de ${totalQuestions}`}
         </h3>
@@ -102,7 +40,7 @@ function QuestionWidget({
         alt="Descrição"
         style={{
           width: '100%',
-          height: '150px',
+          height: '200px',
           objectFit: 'cover',
         }}
         src={questions.image}
@@ -169,6 +107,7 @@ const screenStates = {
 };
 
 export default function QuizPage() {
+  // const randomIndex = Math.floor(Math.random() * 3);
   const [screenState, setScreenState] = React.useState(screenStates.LOADING);
   const [results, setResults] = React.useState([]);
   const totalQuestions = db.questions.length;
@@ -187,7 +126,7 @@ export default function QuizPage() {
     // fetch(PESQUISAR SOBRE ISSO DEPOIS)
     setTimeout(() => {
       setScreenState(screenStates.QUIZ);
-    }, 1 * 1000);
+    }, 2 * 1250);
   }, []);
 
   function handleSubmitQuiz() {
