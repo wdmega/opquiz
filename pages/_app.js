@@ -2,8 +2,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import db from '../db.json';
+import * as gtag from '../lib/gtag';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -32,6 +34,17 @@ const GlobalStyle = createGlobalStyle`
 const { theme } = db;
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
+  React.useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <>
       <Head>

@@ -2,6 +2,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
+import db from '../../../db.json';
 import Widget from '../../components/Widgets';
 
 export default function LoadingWidget() {
@@ -33,6 +34,7 @@ export default function LoadingWidget() {
   `;
   return (
     <Widget
+      backgroundColor={db.theme.colors.primary}
       as={motion.section}
       transition={{ delay: 0.1, duration: 0.5 }}
       variants={{
