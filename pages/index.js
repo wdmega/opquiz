@@ -26,6 +26,7 @@ export default function Home() {
       <QuizContainer>
         <QuizLogo />
         <Widget
+          backgroundColor={db.theme.colors.primary}
           as={motion.section}
           transition={{ delay: 0.1, duration: 0.5 }}
           variants={{
@@ -35,7 +36,9 @@ export default function Home() {
           initial="hidden"
           animate="show"
         >
-          <Widget.Header>
+          <Widget.Header
+            backgroundColor={db.theme.colors.primary}
+          >
             <h1>One Piece Quiz</h1>
           </Widget.Header>
 
@@ -63,6 +66,7 @@ export default function Home() {
         </Widget>
 
         <Widget
+          backgroundColor={db.theme.colors.primary}
           as={motion.section}
           transition={{ delay: 0.5, duration: 0.5 }}
           variants={{
@@ -72,7 +76,9 @@ export default function Home() {
           initial="hidden"
           animate="show"
         >
-          <Widget.Header>
+          <Widget.Header
+            backgroundColor={db.theme.colors.primary}
+          >
             <h1>Quiz da Galera</h1>
           </Widget.Header>
           <Widget.Content>

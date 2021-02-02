@@ -1,7 +1,6 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable react/prop-types */
 import React from 'react';
-// import { useRouter } from 'next/router';
 
 import db from '../../db.json';
 import Widget from '../../src/components/Widgets';
@@ -28,8 +27,12 @@ function QuestionWidget({
   const isCorrect = selectedAlternative === questions.answer;
   const hasAlternativeSelected = selectedAlternative !== undefined;
   return (
-    <Widget>
-      <Widget.Header>
+    <Widget
+      backgroundColor={questions.theme.colors.primary}
+    >
+      <Widget.Header
+        backgroundColor={questions.theme.colors.primary}
+      >
         <BackLinkArrow href="/" />
         <h3>
           {`Pergunta ${questionIndex + 1} de ${totalQuestions}`}
@@ -45,7 +48,9 @@ function QuestionWidget({
         }}
         src={questions.image}
       />
-      <Widget.Content>
+      <Widget.Content
+        backgroundColor={questions.theme.colors.primary}
+      >
         <h2>
           {questions.title}
         </h2>
@@ -71,6 +76,7 @@ function QuestionWidget({
             const isSelected = selectedAlternative === alternativeIndex;
             return (
               <Widget.Topic
+                backgroundColor={questions.theme.colors.secondary}
                 as="label"
                 key={alternativeId}
                 htmlFor={alternativeId}
@@ -139,7 +145,7 @@ export default function QuizPage() {
   }
 
   return (
-    <QuizBackground backgroundImage={db.bg}>
+    <QuizBackground backgroundImage={questions.bg}>
       <QuizContainer>
         <QuizLogo />
         {screenState === screenStates.QUIZ && (
