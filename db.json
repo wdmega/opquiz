@@ -1,9 +1,21 @@
 {
     "bg": "https://cdn.discordapp.com/attachments/804045874300583936/804048719803973642/2222765.png",
-    "title": "Quiz CSS da Alura",
+    "title": "One piece Quiz !",
     "description": "Teste seus conhecimentos sobre One piece",
     "questions": [
       {
+        "theme": {
+          "colors": {
+            "primary": "#060000",
+            "secondary": "#EEB63D",
+            "mainBg": "#171B35",
+            "contrastText": "#FFFFFF",
+            "wrong": "#FF5722",
+            "success": "#4CAF50"
+          },
+          "borderRadius": "4px"
+        },
+        "bg": "https://cdn.discordapp.com/attachments/804045874300583936/804045982978932766/Luffy.jpg",
         "image": "https://cdn.discordapp.com/attachments/804045874300583936/804045982978932766/Luffy.jpg",
         "title": "Qual a data de aniversário do Luffy?",
         "description": "Eu vou ser o Rei dos piratas !",
@@ -16,6 +28,18 @@
         ]
       },
       {
+        "theme": {
+          "colors": {
+            "primary": "#903D59",
+            "secondary": "#4A7F63",
+            "mainBg": "#171B35",
+            "contrastText": "#FFFFFF",
+            "wrong": "#FF5722",
+            "success": "#4CAF50"
+          },
+          "borderRadius": "4px"
+        },
+        "bg": "https://cdn.discordapp.com/attachments/804045874300583936/804046005463941130/Zoro.png",
         "image": "https://cdn.discordapp.com/attachments/804045874300583936/804046005463941130/Zoro.png",
         "title": "Qual a data de aniversário do Zoro?",
         "description": "Eu vou ser o melhor espadachim !",
@@ -28,6 +52,18 @@
         ]
       },
       {
+        "theme": {
+          "colors": {
+            "primary": "#564478",
+            "secondary": "#F48C35",
+            "mainBg": "#171B35",
+            "contrastText": "#FFFFFF",
+            "wrong": "#FF5722",
+            "success": "#4CAF50"
+          },
+          "borderRadius": "4px"
+        },
+        "bg": "https://cdn.discordapp.com/attachments/804045874300583936/804045986687090718/Nami.jpg",
         "image": "https://cdn.discordapp.com/attachments/804045874300583936/804045986687090718/Nami.jpg",
         "title": "Qual a data de aniversário da Nami?",
         "description": "Eu vou desenhar o mapa do mundo inteiro !",
